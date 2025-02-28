@@ -3,3 +3,5 @@ psycopg2-binary==2.9.9
 pillow==10.4.0
 djangorestframework==3.15.2
 python-dotenv==1.0.1
+djangorestframework_simplejwt==5.4.0
+django-cors-headers==4.7.0
