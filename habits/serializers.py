@@ -16,3 +16,10 @@ class HabitSerializer(serializers.ModelSerializer):
             EnjoyableNotRewardNotLinked(),
             PeriodicityValidator()
         ]
+
+
+class HabitPublicSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Habit
+        fields = "__all__"
