@@ -29,7 +29,6 @@ class Migration(migrations.Migration):
                 (
                     "place",
                     models.CharField(
-                        help_text="Укажите место, в котором необходимо выполнять привычку",
                         max_length=150,
                         verbose_name="Место",
                     ),
@@ -51,13 +50,16 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "is_enjoyable",
-                    models.BooleanField(verbose_name="Признак приятной привычки"),
+                    models.BooleanField(
+                        verbose_name="Признак приятной привычки"
+                    ),
                 ),
                 (
                     "periodicity",
                     models.IntegerField(
                         default=1,
-                        help_text="Укажите периодичность выполнения привычки для напоминания в днях (по умолчанию ежедневная)",
+                        help_text="Укажите периодичность выполнения привычки для напоминания в днях "
+                        "(по умолчанию ежедневная)",
                         verbose_name="Периодичность",
                     ),
                 ),
@@ -73,7 +75,9 @@ class Migration(migrations.Migration):
                 (
                     "time_to_complete",
                     models.TimeField(
-                        blank=True, null=True, verbose_name="Время на выполнение"
+                        blank=True,
+                        null=True,
+                        verbose_name="Время на выполнение",
                     ),
                 ),
                 (

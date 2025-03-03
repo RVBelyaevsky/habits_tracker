@@ -1,5 +1,4 @@
 from rest_framework import viewsets, generics
-from rest_framework.permissions import AllowAny
 
 from habits.models import Habit
 from habits.paginators import HabitPaginator
@@ -18,7 +17,7 @@ class HabitViewSet(viewsets.ModelViewSet):
         habit.save()
 
     def get_permissions(self):
-        if self.action != 'list':
+        if self.action != "list":
             self.permission_classes = [IsOwner]
         return super().get_permissions()
 
