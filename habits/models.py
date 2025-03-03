@@ -6,6 +6,10 @@ NULLABLE = {"blank": True, "null": True}
 
 
 class Habit(models.Model):
+    """
+    Модель для хранения информации о привычках пользователей.
+    """
+
     user = models.ForeignKey(
         AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -39,9 +43,7 @@ class Habit(models.Model):
         verbose_name="Периодичность",
         help_text="Укажите периодичность выполнения привычки для напоминания в днях (по умолчанию ежедневная)",
     )
-    reward = models.CharField(
-        max_length=300, verbose_name="Вознаграждение", **NULLABLE
-    )
+    reward = models.CharField(max_length=300, verbose_name="Вознаграждение", **NULLABLE)
     time_to_complete = models.TimeField(
         auto_now=False,
         auto_now_add=False,

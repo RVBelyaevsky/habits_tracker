@@ -6,3 +6,8 @@ python-dotenv==1.0.1
 djangorestframework_simplejwt==5.4.0
 django-cors-headers==4.7.0
 drf-yasg==1.21.9
+celery==5.4.0
+eventlet==0.39.0
+redis==5.2.1
+django-celery-beat==2.7.0
+requests==2.32.3

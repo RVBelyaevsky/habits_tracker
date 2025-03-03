@@ -11,6 +11,7 @@ from habits.validators import (
 
 
 class HabitSerializer(serializers.ModelSerializer):
+    '''Сериализатор для всех привычек'''
     class Meta:
         model = Habit
         fields = "__all__"
@@ -24,7 +25,7 @@ class HabitSerializer(serializers.ModelSerializer):
 
 
 class HabitPublicSerializer(serializers.ModelSerializer):
-
+    '''Сериализатор для публичных привычек'''
     class Meta:
         model = Habit
         fields = "__all__"
