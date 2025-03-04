@@ -4,6 +4,7 @@ from habits.models import Habit
 from habits.paginators import HabitPaginator
 from habits.permissions import IsOwner
 from habits.serializers import HabitSerializer, HabitPublicSerializer
+from rest_framework.permissions import AllowAny
 
 
 class HabitViewSet(viewsets.ModelViewSet):
@@ -30,6 +31,7 @@ class HabitPublicListAPIView(generics.ListAPIView):
     serializer_class = HabitPublicSerializer
     queryset = Habit.objects.all()
     pagination_class = HabitPaginator
+    permission_classes = [AllowAny,]
 
     def get_queryset(self):
         self.queryset = Habit.objects.filter(is_published=True)
