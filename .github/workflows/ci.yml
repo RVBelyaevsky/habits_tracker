@@ -76,8 +76,8 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }}
-          docker stop habits_tracker || true
-          docker rm habits_tracker || true
-          docker run -d --name habits_tracker -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+          sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }}
+          sudo docker stop habits_tracker || true
+          sudo docker rm habits_tracker || true
+          sudo docker run -d --name habits_tracker -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
           EOF
