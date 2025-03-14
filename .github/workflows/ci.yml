@@ -101,8 +101,9 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd habits_tracker
-          git pull
-          sudo docker-compose pull
+          touch .env
+          echo "${{ secrets.ENV_FILE_DATA }}" > .env
+          
           sudo docker-compose down
           sudo docker-compose up -d --build
           EOF
