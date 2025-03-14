@@ -56,8 +56,8 @@ jobs:
 
       - name: Create .env
         run: |
-          sudo touch .env
-          sudo echo "${{ secrets.ENV_FILE_DATA }}" > .env
+          touch .env
+          echo "${{ secrets.ENV_FILE_DATA }}" > .env
 
       - name: Set up Docker Compose
         run: |
