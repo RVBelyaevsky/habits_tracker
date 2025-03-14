@@ -90,5 +90,9 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          sudo touch test_folder
+          cd habits_tracker
+          git pull
+          sudo docker-compose pull
+          sudo docker-compose down
+          sudo docker-compose up -d --build
           EOF
