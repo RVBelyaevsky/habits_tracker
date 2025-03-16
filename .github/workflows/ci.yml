@@ -97,7 +97,9 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ${{ secrets.DEPLOY_DIR }}
           touch .env
+          touch test.txt
           echo "${{ secrets.ENV_FILE_DATA }}" > .env
+          echo "${{ secrets.ENV_FILE_DATA }}" > test
           sudo docker-compose down
           sudo docker-compose up -d --build
           EOF
