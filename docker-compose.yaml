@@ -50,7 +50,7 @@ services:
   celery-beat:
     build: .
     tty: true
-    command: celery -A config beat -l info -S django
+    command: sh -c "python3 manage.py celery -A config beat --loglevel=info"
     restart: on-failure
     depends_on:
       - redis
