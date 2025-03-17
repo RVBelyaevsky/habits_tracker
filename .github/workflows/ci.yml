@@ -67,15 +67,16 @@ jobs:
       - name: Log in Docker hub
         run: echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
-#      - name: Build Docker image
-#        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }} .
-#
-#      - name: Push Docker image in Docker hub
-#        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }}
-      - name: Build, Push Images with docker-compose
-        run: |
-          sudo docker-compose build
-          sudo docker-compose push
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }} .
+
+      - name: Push Docker image in Docker hub
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }}
+
+#      - name: Build, Push Images with docker-compose
+#        run: |
+#          sudo docker-compose build
+#          sudo docker-compose push
 
   deploy:
     needs: build
@@ -95,11 +96,15 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd ${{ secrets.DEPLOY_DIR }}
-          touch .env
-          touch test.txt
-          echo "${{ secrets.ENV_FILE_DATA }}" > .env
-          echo "${{ secrets.ENV_FILE_DATA }}" > test
-          sudo docker-compose down
-          sudo docker-compose up -d --build
+          sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }}
+          sudo docker stop habits_tracker || true
+          sudo docker rm habits_tracker || true
+          sudo docker run -d --name habits_tracker -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }}
+#          cd ${{ secrets.DEPLOY_DIR }}
+#          touch .env
+#          touch test.txt
+#          echo "${{ secrets.ENV_FILE_DATA }}" > .env
+#          echo "${{ secrets.ENV_FILE_DATA }}" > test
+#          sudo docker-compose down
+#          sudo docker-compose up -d --build
           EOF
