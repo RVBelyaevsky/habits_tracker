@@ -73,11 +73,6 @@ jobs:
       - name: Push Docker image in Docker hub
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }}
 
-#      - name: Build, Push Images with docker-compose
-#        run: |
-#          sudo docker-compose build
-#          sudo docker-compose push
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -100,11 +95,4 @@ jobs:
           sudo docker stop habits_tracker || true
           sudo docker rm habits_tracker || true
           sudo docker run -d --name habits_tracker -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/habits_tracker:${{ github.sha }}
-#          cd ${{ secrets.DEPLOY_DIR }}
-#          touch .env
-#          touch test.txt
-#          echo "${{ secrets.ENV_FILE_DATA }}" > .env
-#          echo "${{ secrets.ENV_FILE_DATA }}" > test
-#          sudo docker-compose down
-#          sudo docker-compose up -d --build
           EOF
