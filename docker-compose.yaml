@@ -50,7 +50,7 @@ services:
   celery-beat:
     build: .
     tty: true
-    command: python -m celery -A config beat -l info
+    command: celery -A config beat -l info -S django
     restart: on-failure
     depends_on:
       - redis
