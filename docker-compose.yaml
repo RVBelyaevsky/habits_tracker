@@ -1,28 +1,24 @@
 services:
   redis:
     image: redis:latest
-    volumes:
-      - redis_data:/data
+    ports:
+      - "6379:6379"
     env_file:
       - ./.env
   db:
     image: postgres:16.0
     env_file:
       - ./.env
-#    ports:
-#      - "5432:5432"
+    ports:
+      - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data/
 
-#    healthcheck:
-#      test: ["CMD-SHELL","-c","pg_isready -U $POSTGRES_USER"]
-#      interval: 10s
-#      retries: 5
-#      timeout: 5s
+
   web:
     build: .
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     command: sh -c "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
     depends_on:
       - db
@@ -35,9 +31,9 @@ services:
 
   celery:
     build: .
-    tty: true
-    command: python -m celery -A config worker -l info
-    restart: on-failure
+
+    command: celery -A config worker --loglevel=info
+
     depends_on:
       - redis
       - db
@@ -49,9 +45,9 @@ services:
 
   celery-beat:
     build: .
-    tty: true
-    command: sh -c "python3 manage.py celery -A config beat --loglevel=info"
-    restart: on-failure
+
+    command: celery -A config beat --loglevel=info
+
     depends_on:
       - redis
       - db
@@ -66,7 +62,7 @@ services:
       context: ./nginx
     ports:
       - "80:80"
-    voLumes:
+    volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - static_volume:/app/staticfiles
     depends_on:
@@ -75,4 +71,3 @@ services:
 volumes:
   pg_data:
   static_volume:
-  redis_data:
