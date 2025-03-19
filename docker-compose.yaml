@@ -1,37 +1,37 @@
 services:
   redis:
     image: redis:latest
-    restart: on-failure
-    ports:
-      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    env_file:
+      - ./.env
   db:
     image: postgres:16.0
-    restart: on-failure
     env_file:
-      - .env
-    ports:
-      - "5432:5432"
+      - ./.env
+#    ports:
+#      - "5432:5432"
     volumes:
-      - pg_data:/var/lib/postgresql/data    #монтирует текущую директорию на контейнер
-    healthcheck:
-      test: ["CMD-SHELL","-c","pg_isready -U $POSTGRES_USER"]
-      interval: 10s
-      retries: 5
-      timeout: 5s
-  app:
-    build: .
-    tty: true
-    ports:
-      - "8000:8000"
+      - pg_data:/var/lib/postgresql/data/
 
-    command: sh -c 'python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
+#    healthcheck:
+#      test: ["CMD-SHELL","-c","pg_isready -U $POSTGRES_USER"]
+#      interval: 10s
+#      retries: 5
+#      timeout: 5s
+  web:
+    build: .
+    expose:
+      - "8000"
+    command: sh -c "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000"
     depends_on:
-      db:
-        condition: service_healthy
+      - db
+      - redis
     volumes:
       - .:/app
+      - static_volume:/app/staticfiles
     env_file:
-      - .env
+      - ./.env
 
   celery:
     build: .
@@ -41,7 +41,7 @@ services:
     depends_on:
       - redis
       - db
-      - app
+      - web
     volumes:
       - .:/app
     env_file:
@@ -55,7 +55,7 @@ services:
     depends_on:
       - redis
       - db
-      - app
+      - web
     volumes:
       - .:/app
     env_file:
@@ -70,8 +70,9 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - static_volume:/app/staticfiles
     depends_on:
-      - app
+      - web
 
 volumes:
   pg_data:
-    static_volume:
+  static_volume:
+  redis_data:
