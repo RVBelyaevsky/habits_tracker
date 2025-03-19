@@ -29,33 +29,33 @@ services:
     env_file:
       - ./.env
 
-  celery:
-    build: .
+#  celery:
+#    build: .
+#
+#    command: celery -A config worker --loglevel=info
+#
+#    depends_on:
+#      - redis
+#      - db
+#      - web
+#    volumes:
+#      - .:/app
+#    env_file:
+#      - .env
 
-    command: celery -A config worker --loglevel=info
-
-    depends_on:
-      - redis
-      - db
-      - web
-    volumes:
-      - .:/app
-    env_file:
-      - .env
-
-  celery-beat:
-    build: .
-
-    command: celery -A config beat --loglevel=info
-
-    depends_on:
-      - redis
-      - db
-      - web
-    volumes:
-      - .:/app
-    env_file:
-      - .env
+#  celery-beat:
+#    build: .
+#
+#    command: celery -A config beat --loglevel=info
+#
+#    depends_on:
+#      - redis
+#      - db
+#      - web
+#    volumes:
+#      - .:/app
+#    env_file:
+#      - .env
 
   nginx:
     build:

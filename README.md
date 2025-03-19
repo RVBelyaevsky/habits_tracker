@@ -1,5 +1,7 @@
 # habits_tracker
 # Проект по реализации бэкенд-части SPA веб-приложения "трекер полезных привычек"
+# Описание
+
 # Установка 
 1. клонирорвать репозитарий https://github.com/RVBelyaevsky/habits_tracker.git
 2. установить зависимости из файла requirements.txt
