@@ -91,5 +91,6 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+          sudo rm -r habits_tracker
           git clone https://github.com/RVBelyaevsky/habits_tracker.git
           EOF
